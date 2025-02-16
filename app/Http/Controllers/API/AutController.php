@@ -68,6 +68,11 @@ class AutController extends Controller
             }
     }
     public function logout(Request $request){
-
+        $user = $request->user();
+        $user->tokens()->delete();
+        return response()->json([
+            'status'=>true,
+            'message'=>'You Logout Successfully',
+        ],200);
     }
 }
