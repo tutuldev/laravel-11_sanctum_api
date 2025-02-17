@@ -101,11 +101,15 @@ class PostController extends Controller
                 ],401);
             }
 
-            $post = Post::select('id','image')->get();
+            $postImage = Post::select('id','image')
+        ->where(['id'=>$id])->get();
+            // return $postImage;
+            // return $postImage[0]->image;
+
             if($request->image != ''){
                 $path = public_path() . '/uploads';
-                if($post->image != '' && $post->image != null){
-                    $old_file = $path. $post->image;
+                if($postImage[0]->image != '' && $postImage[0]->image != null){
+                    $old_file = $path. $postImage[0]->image;
                     if(file_exists($old_file)){
                         unlink($old_file);
                     }
@@ -115,7 +119,7 @@ class PostController extends Controller
                 $imageName = time(). '.' . $text;
                 $img->move(public_path(). '/uploads', $imageName);
             }else{
-                $imageName = $post->image;
+                $imageName = $postImage->image;
             }
 
 
