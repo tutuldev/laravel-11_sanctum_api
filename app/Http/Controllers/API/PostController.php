@@ -102,14 +102,17 @@ class PostController extends Controller
             }
 
             $postImage = Post::select('id','image')
-        ->where(['id'=>$id])->get();
+             ->where(['id'=>$id])->get();
             // return $postImage;
             // return $postImage[0]->image;
 
+
+            // note: best way to use first method
+            
             if($request->image != ''){
                 $path = public_path() . '/uploads';
                 if($postImage[0]->image != '' && $postImage[0]->image != null){
-                    $old_file = $path. $postImage[0]->image;
+                    $old_file = $path. '/'. $postImage[0]->image;
                     if(file_exists($old_file)){
                         unlink($old_file);
                     }
@@ -142,7 +145,7 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $imagePath= Post::select('image')->where('id',$id)->get();
-        $filePath = public_path(). '/uploads' . $imagePath[0]['image'];
+        $filePath = public_path(). '/uploads/' . $imagePath[0]['image'];
 
         unlink($filePath);
 
